@@ -13,6 +13,10 @@ describe Oystercard do
     it "should initialize the balance to parameter if passed" do
       expect(described_class.new(10).balance).to eq(10)
     end
+
+    it "should initialise with an in_journey variable" do
+      expect(described_class.new(10).in_journey?).to eq(false)
+    end
   end
 
   describe "#top_up" do
@@ -41,6 +45,33 @@ describe Oystercard do
 
     it "should not deduct money from account if amount is more than balance" do
       expect{subject.deduct(5)}.to raise_error("You have insufficient funds in your account!")
+    end
+  end
+
+  describe "#in_journey?" do
+    it "should return a boolean" do
+      expect([TrueClass, FalseClass].include?(subject.in_journey?.class)).to eq(true)
+    end
+  end
+
+  describe "#touch_in?" do
+    it "should return a boolean" do
+      test_card = described_class.new(10)
+
+      test_card.touch_in
+
+      expect(test_card.in_journey?).to eq(true)
+    end
+  end
+
+  describe "#touch_out?" do
+    it "should return a boolean" do
+      test_card = described_class.new(10)
+
+      test_card.touch_in
+      test_card.touch_out
+
+      expect(test_card.in_journey?).to eq(false)
     end
   end
 end

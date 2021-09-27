@@ -58,7 +58,7 @@ describe Oystercard do
     it "should change the in_journey property to true if enough money in balance" do
       test_card = described_class.new(10)
 
-      test_card.touch_in(described_class::MINIMUM_FARE)
+      test_card.touch_in
 
       expect(test_card.in_journey?).to eq(true)
     end
@@ -76,7 +76,7 @@ describe Oystercard do
     it "should change the in_journey property to false" do
       test_card = described_class.new(10)
 
-      test_card.touch_in(described_class::MINIMUM_FARE)
+      test_card.touch_in
       test_card.touch_out
 
       expect(test_card.in_journey?).to eq(false)

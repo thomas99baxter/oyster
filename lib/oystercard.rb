@@ -21,8 +21,8 @@ class Oystercard
     @in_journey
   end
 
-  def touch_in(fare)
-    balance_above_0?(MINIMUM_FARE) ? @in_journey = true : raise(INSUFFICIENT_ERROR_MSG)
+  def touch_in(fare = MINIMUM_FARE)
+    balance_above_0?(fare) ? @in_journey = true : raise(INSUFFICIENT_ERROR_MSG)
   end
 
   def touch_out

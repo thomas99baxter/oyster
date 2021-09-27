@@ -20,18 +20,18 @@ describe Oystercard do
   end
 
   describe "#top_up" do
-    it "should top balance by specified amount" do
+    it "should top balance by specified amount when balance is less than full" do
       subject.top_up(10)
       expect(subject.balance).to eq(10)
     end
 
-    it "should top balance by specified amount when balance is less than full" do
+    it "should not top up balance when balance (+ top-up amount) is over or equal to maximum balance" do
       subject.top_up(80)
   
       expect{subject.top_up(20)}.to raise_error("Over £#{described_class::MAX_BALANCE} balance limit!")
     end
 
-    it "should not top up balance if above deposit limit" do
+    it "should not top up balance if above balance limit" do
       expect{subject.top_up(100)}.to raise_error("Over £#{described_class::MAX_BALANCE} balance limit!")
     end
   end
@@ -66,7 +66,7 @@ describe Oystercard do
     it "should raise an error if not enough in balance and not change in_journey property" do
       test_card = described_class.new
 
-      expect{test_card.touch_in(described_class::MINIMUM_FARE)}.to raise_error(described_class::INSUFFICIENT_ERROR_MSG)
+      expect{test_card.touch_in}.to raise_error(described_class::INSUFFICIENT_ERROR_MSG)
 
       expect(test_card.in_journey?).to eq(false)
     end

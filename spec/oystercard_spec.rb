@@ -31,4 +31,16 @@ describe Oystercard do
       expect{subject.top_up(100)}.to raise_error("Over £#{described_class::MAX_BALANCE} balance limit!")
     end
   end
+
+  describe "#deduct" do
+    it "should deduct money from account" do
+      subject.top_up(10)
+      subject.deduct(5)
+      expect(subject.balance).to eq(5)
+    end
+
+    it "should not deduct money from account if amount is more than balance" do
+      expect{subject.deduct(5)}.to raise_error("You have insufficient funds in your account!")
+    end
+  end
 end

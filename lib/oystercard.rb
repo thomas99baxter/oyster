@@ -9,4 +9,9 @@ class Oystercard
     total_balance = @balance + amount
     total_balance < MAX_BALANCE ? @balance += amount : raise("Over £#{MAX_BALANCE} balance limit!")
   end
+
+  def deduct(amount)
+    total_balance = @balance - amount
+    total_balance > 0 ? @balance -= amount : raise("You have insufficient funds in your account!")
+  end
 end

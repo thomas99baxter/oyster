@@ -20,5 +20,15 @@ describe Oystercard do
       subject.top_up(10)
       expect(subject.balance).to eq(10)
     end
+
+    it "should top balance by specified amount when balance is less than full" do
+      subject.top_up(80)
+  
+      expect{subject.top_up(20)}.to raise_error("Over £#{described_class::MAX_BALANCE} balance limit!")
+    end
+
+    it "should not top up balance if above deposit limit" do
+      expect{subject.top_up(100)}.to raise_error("Over £#{described_class::MAX_BALANCE} balance limit!")
+    end
   end
 end

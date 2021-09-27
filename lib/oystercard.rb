@@ -14,7 +14,6 @@ class Oystercard
   end
 
   def deduct(amount)
-    total_balance = @balance - amount
     balance_above_0?(amount) ? @balance -= amount : raise(INSUFFICIENT_ERROR_MSG)
   end
 

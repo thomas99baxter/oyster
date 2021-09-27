@@ -44,7 +44,7 @@ describe Oystercard do
     end
 
     it "should not deduct money from account if amount is more than balance" do
-      expect{subject.deduct(5)}.to raise_error("You have insufficient funds in your account!")
+      expect{subject.deduct(5)}.to raise_error(described_class::INSUFFICIENT_ERROR_MSG)
     end
   end
 
@@ -54,21 +54,29 @@ describe Oystercard do
     end
   end
 
-  describe "#touch_in?" do
-    it "should return a boolean" do
+  describe "#touch_in" do
+    it "should change the in_journey property to true if enough money in balance" do
       test_card = described_class.new(10)
 
-      test_card.touch_in
+      test_card.touch_in(described_class::MINIMUM_FARE)
 
       expect(test_card.in_journey?).to eq(true)
     end
+
+    it "should raise an error if not enough in balance and not change in_journey property" do
+      test_card = described_class.new
+
+      expect{test_card.touch_in(described_class::MINIMUM_FARE)}.to raise_error(described_class::INSUFFICIENT_ERROR_MSG)
+
+      expect(test_card.in_journey?).to eq(false)
+    end
   end
 
-  describe "#touch_out?" do
-    it "should return a boolean" do
+  describe "#touch_out" do
+    it "should change the in_journey property to false" do
       test_card = described_class.new(10)
 
-      test_card.touch_in
+      test_card.touch_in(described_class::MINIMUM_FARE)
       test_card.touch_out
 
       expect(test_card.in_journey?).to eq(false)

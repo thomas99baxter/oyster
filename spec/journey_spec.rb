@@ -37,4 +37,10 @@ describe Journey do
       })
     end
   end
+
+  describe "#fare" do
+    it "should set the minimum fare" do
+      expect(described_class.new(station).fare).to eq Oystercard::MINIMUM_FARE
+    end
+  end
 end

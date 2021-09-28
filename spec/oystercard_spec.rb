@@ -16,16 +16,12 @@ describe Oystercard do
       expect(subject.balance).to eq(0)
     end
 
-    it "should initialize the balance to parameter if passed" do
-      expect(described_class.new(10).balance).to eq(10)
-    end
-
     it "should initialise with an in_journey variable" do
       expect(described_class.new(10).in_journey?).to eq(false)
     end
 
-    it "should initalise with a journeys" do
-      expect(described_class.new(10).journeys).to eq([])
+    it "should initalise with attributes balance and journeys" do
+      expect(described_class.new(10)).to have_attributes(balance: 10, journeys: [])
     end
   end
 

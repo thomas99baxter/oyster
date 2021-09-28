@@ -1,3 +1,4 @@
+#Can this just be one method? 
 class Journey
   attr_reader :full_journey
   def initialize(entry_station)

@@ -13,10 +13,6 @@ class Oystercard
     below_limit?(amount) ? @balance += amount : raise("Over £#{MAX_BALANCE} balance limit!")
   end
 
-  def deduct(amount)
-    balance_above_0?(amount) ? @balance -= amount : raise(INSUFFICIENT_ERROR_MSG)
-  end
-
   def in_journey?
     @in_journey
   end
@@ -26,6 +22,7 @@ class Oystercard
   end
 
   def touch_out
+    deduct(MINIMUM_FARE)
     @in_journey = false
   end
 
@@ -37,6 +34,10 @@ class Oystercard
 
   def balance_above_0?(amount)
     (@balance - amount) > 0
+  end
+
+  def deduct(amount)
+    balance_above_0?(amount) ? @balance -= amount : raise(INSUFFICIENT_ERROR_MSG)
   end
 
 end

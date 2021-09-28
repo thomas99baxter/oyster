@@ -36,17 +36,6 @@ describe Oystercard do
     end
   end
 
-  describe "#deduct" do
-    it "should deduct money from account" do
-      subject.top_up(10)
-      subject.deduct(5)
-      expect(subject.balance).to eq(5)
-    end
-
-    it "should not deduct money from account if amount is more than balance" do
-      expect{subject.deduct(5)}.to raise_error(described_class::INSUFFICIENT_ERROR_MSG)
-    end
-  end
 
   describe "#in_journey?" do
     it "should return a boolean" do
@@ -81,5 +70,14 @@ describe Oystercard do
 
       expect(test_card.in_journey?).to eq(false)
     end
+    
+    it "should deduct minimum fare from balance" do
+      test_card = described_class.new(10)
+  
+      test_card.touch_in
+  
+      expect{ test_card.touch_out }.to change{ test_card.balance }.by(-described_class::MINIMUM_FARE)
+    end
   end
+
 end

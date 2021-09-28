@@ -1,8 +1,10 @@
+require 'journey'
+
 class Oystercard
   MAX_BALANCE = 90
   MINIMUM_FARE = 1
   INSUFFICIENT_ERROR_MSG = "You have insufficient funds in your account!"
-  attr_reader :balance, :entry_station, :journeys
+  attr_reader :balance, :journeys, :new_journey
 
 
   def initialize(balance = 0)
@@ -15,16 +17,16 @@ class Oystercard
   end
 
   def in_journey?
-    !@entry_station.nil?
+    !@new_journey.nil?
   end
 
   def touch_in(entry_station)
-    balance_above_0?(MINIMUM_FARE) ? @entry_station = entry_station : raise(INSUFFICIENT_ERROR_MSG)
+    balance_above_0?(MINIMUM_FARE) ? @new_journey = Journey.new(entry_station) : raise(INSUFFICIENT_ERROR_MSG)
   end
 
-  def touch_out
+  def touch_out(exit_station)
     deduct(MINIMUM_FARE)
-    @entry_station = nil
+    reset_journey(exit_station)
   end
 
   private
@@ -39,6 +41,12 @@ class Oystercard
 
   def deduct(amount)
     balance_above_0?(amount) ? @balance -= amount : raise(INSUFFICIENT_ERROR_MSG)
+  end
+
+  def reset_journey(exit_station)
+    @new_journey.end_journey(exit_station)
+    @journeys.push(@new_journey)
+    @new_journey = nil
   end
 
 end

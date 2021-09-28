@@ -1,9 +1,11 @@
 require 'oystercard'
 require 'station'
+require 'journey'
 
 describe Oystercard do
 
   let(:station) {double :station}
+  let(:exit_station) {double :station}
   
   describe "#initialize" do
     it "should initialize the class" do
@@ -57,7 +59,7 @@ describe Oystercard do
       test_card.touch_in(station)
 
       expect(test_card.in_journey?).to eq(true)
-      expect(test_card.entry_station).to eq(station)
+      expect(test_card.new_journey.full_journey[:entry_station]).to eq(station)
     end
 
     it "should raise an error if not enough in balance and not change in_journey property" do
@@ -74,7 +76,7 @@ describe Oystercard do
       test_card = described_class.new(10)
 
       test_card.touch_in(station)
-      test_card.touch_out
+      test_card.touch_out(exit_station)
 
       expect(test_card.in_journey?).to eq(false)
     end
@@ -84,7 +86,7 @@ describe Oystercard do
   
       test_card.touch_in(station)
   
-      expect{ test_card.touch_out }.to change{ test_card.balance }.by(-described_class::MINIMUM_FARE)
+      expect{ test_card.touch_out( exit_station) }.to change{ test_card.balance }.by(-described_class::MINIMUM_FARE)
     end
   end
 

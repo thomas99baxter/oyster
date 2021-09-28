@@ -16,8 +16,8 @@ describe Journey do
 
     it "should initialize with a full journey hash" do
       expect(described_class.new(station).full_journey).to eq({
-        "entry_station" => station,
-        "exit_station" => nil
+        :entry_station => station,
+        :exit_station => nil
       })
     end
   end
@@ -26,14 +26,14 @@ describe Journey do
     it "should set full journey's exit station property" do
       test_journey = described_class.new(station)
       expect(test_journey.full_journey).to eq({
-        "entry_station" => station,
-        "exit_station" => nil
+        :entry_station => station,
+        :exit_station => nil
       })
 
       test_journey.end_journey(exit_station)
       expect(test_journey.full_journey).to eq({
-        "entry_station" => station,
-        "exit_station" => exit_station
+        :entry_station => station,
+        :exit_station => exit_station
       })
     end
   end

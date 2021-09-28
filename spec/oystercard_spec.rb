@@ -1,5 +1,9 @@
 require 'oystercard'
+require 'station'
+
 describe Oystercard do
+
+  let(:station) {double :station}
   
   describe "#initialize" do
     it "should initialize the class" do
@@ -46,16 +50,16 @@ describe Oystercard do
   describe "#touch_in" do
     it "should change the in_journey property to true if enough money in balance" do
       test_card = described_class.new(10)
-
-      test_card.touch_in
+      test_card.touch_in(station)
 
       expect(test_card.in_journey?).to eq(true)
+      expect(test_card.entry_station).to eq(station)
     end
 
     it "should raise an error if not enough in balance and not change in_journey property" do
       test_card = described_class.new
 
-      expect{test_card.touch_in}.to raise_error(described_class::INSUFFICIENT_ERROR_MSG)
+      expect{test_card.touch_in(station)}.to raise_error(described_class::INSUFFICIENT_ERROR_MSG)
 
       expect(test_card.in_journey?).to eq(false)
     end
@@ -65,7 +69,7 @@ describe Oystercard do
     it "should change the in_journey property to false" do
       test_card = described_class.new(10)
 
-      test_card.touch_in
+      test_card.touch_in(station)
       test_card.touch_out
 
       expect(test_card.in_journey?).to eq(false)
@@ -74,7 +78,7 @@ describe Oystercard do
     it "should deduct minimum fare from balance" do
       test_card = described_class.new(10)
   
-      test_card.touch_in
+      test_card.touch_in(station)
   
       expect{ test_card.touch_out }.to change{ test_card.balance }.by(-described_class::MINIMUM_FARE)
     end

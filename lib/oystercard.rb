@@ -2,11 +2,12 @@ class Oystercard
   MAX_BALANCE = 90
   MINIMUM_FARE = 1
   INSUFFICIENT_ERROR_MSG = "You have insufficient funds in your account!"
-  attr_reader :balance, :entry_station
+  attr_reader :balance, :entry_station, :journeys
 
 
   def initialize(balance = 0)
     @balance = balance
+    @journeys = []
   end
 
   def top_up(amount)

@@ -21,6 +21,10 @@ describe Oystercard do
     it "should initialise with an in_journey variable" do
       expect(described_class.new(10).in_journey?).to eq(false)
     end
+
+    it "should initalise with a journeys" do
+      expect(described_class.new(10).journeys).to eq([])
+    end
   end
 
   describe "#top_up" do

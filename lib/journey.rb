@@ -2,7 +2,12 @@
 # raise an error, i think it'd be better to do a bigger refactor and split between
 # the classes (SRP / granularisation)
 
-# TROY: 
+# TROY: I want to raise an error in the oystercard class for handling penalties. 
+# if !in_journey?
+#   @new_journey = Journey.new(entry_station)
+# else
+#   raise "You have not touched out"
+# It only interacts with the journey class on valid trips (e.g. only called when checks have already been made)
 
 require 'oystercard'
 class Journey

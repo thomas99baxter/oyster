@@ -1,0 +1,23 @@
+require 'journey_log'
+
+describe JourneyLog do
+  let(:journey) {double :journey}
+  describe "#initialize" do 
+    it "should initalize a JourneyLog" do
+      expect(described_class.new.class).to eq(JourneyLog)
+    end
+
+    it "should initalize a JourneyLog with journeys" do
+      expect(described_class.new.journeys).to eq([])
+    end
+  end
+
+  describe "#add_journey" do
+    it "should add a journey to the journeys array" do
+      test_journeys = described_class.new
+      expect{
+        test_journeys.add_journey(journey)
+      }.to change { test_journeys.journeys }.from([]).to([journey]) 
+    end
+  end
+end

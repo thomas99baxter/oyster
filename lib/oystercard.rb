@@ -18,13 +18,14 @@ class Oystercard
   end
 
   def attempt_touch_in(entry_station)
-    deduct(@new_journey.fare(true)) if !journey_not_started?
+    @new_journey.add_to_fare(PENALTY_FARE) if !journey_not_started?
     touch_in(entry_station)
   end
   
 
   def attempt_touch_out(exit_station)
-    journey_not_started? ? raise("Journey has not been initiated!") : touch_out(exit_station) 
+    # @new_journey.add_to_fare(PENALTY_FARE) if journey_not_started?
+    touch_out(exit_station) 
   end
 
   private

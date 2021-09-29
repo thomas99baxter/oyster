@@ -12,13 +12,14 @@ describe Journey do
 
     it "should initialize with a full journey hash" do
       expect(described_class.new(station).full_journey.class).to eq(Hash)
-    end
-
-    it "should initialize with a full journey hash" do
       expect(described_class.new(station).full_journey).to eq({
         :entry_station => station,
-        :exit_station => nil
+        :exit_station => nil,
       })
+    end
+
+    it "should initialize a fare instance variable" do
+      expect(described_class.new(station).fare).to eq(0)
     end
   end
 
@@ -38,9 +39,11 @@ describe Journey do
     end
   end
 
-  describe "#fare" do
-    it "should set the minimum fare" do
-      expect(described_class.new(station).fare).to eq Oystercard::MINIMUM_FARE
+  describe "#add_to_fare" do
+    it "should add to fare instance variable" do
+      new_journey = described_class.new(station)
+      new_journey.add_to_fare(10)
+      expect(new_journey.fare).to eq(10)
     end
   end
 end

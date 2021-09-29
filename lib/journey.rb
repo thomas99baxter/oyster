@@ -2,12 +2,16 @@ require 'oystercard'
 class Journey
   MINIMUM_FARE = 1
   attr_reader :full_journey, :fare
-  def initialize(entry_station)
+  def initialize
     @full_journey = {
-       :entry_station => entry_station,
+       :entry_station => nil,
        :exit_station => nil
     }
     @fare = 0
+  end
+
+  def start_journey(entry_station)
+    @full_journey[:entry_station] = entry_station
   end
 
   def end_journey(exit_station)

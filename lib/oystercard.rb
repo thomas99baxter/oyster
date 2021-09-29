@@ -35,7 +35,8 @@ class Oystercard
   end
   
   def touch_in(entry_station)
-    balance_above_0?(MINIMUM_FARE) ? @new_journey = Journey.new(entry_station) : raise(INSUFFICIENT_ERROR_MSG)
+    @new_journey = Journey.new
+    balance_above_0?(MINIMUM_FARE) ? @new_journey.start_journey(entry_station) : raise(INSUFFICIENT_ERROR_MSG)
   end
 
   def touch_out(exit_station)

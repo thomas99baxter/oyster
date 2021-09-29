@@ -22,4 +22,8 @@ class Journey
     @fare += amount
   end
 
+  def not_started? 
+    self.full_journey[:entry_station].nil?
+  end
+
 end

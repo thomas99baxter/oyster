@@ -66,14 +66,13 @@ describe Oystercard do
       test_card = described_class.new(10)
   
       test_card.attempt_touch_in(station)
-  
-      expect{ test_card.attempt_touch_out( exit_station) }.to change{ test_card.balance }.by(-described_class::MINIMUM_FARE)
+      expect{ test_card.attempt_touch_out( exit_station) }.to change{ test_card.new_journey.fare }.by(described_class::MINIMUM_FARE)
     end
 
-    xit "should fail when the journey hasnt been initiated (touched in)" do
+    it "should fail when the journey hasnt been initiated (touched in)" do
       test_card = described_class.new(10)
   
-      expect{ test_card.attempt_touch_out( exit_station) }.to raise_error("Journey has not been initiated!")
+      expect{ test_card.attempt_touch_out( exit_station) }.to change{ test_card.new_journey.fare }.by(described_class::PENALTY_FARE)
     end
   end
 

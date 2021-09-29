@@ -11,6 +11,8 @@ class Oystercard
   def initialize(balance = 0)
     @balance = balance
     @journeys = []
+    # TODO - get rid of having to initialize this journey
+    @new_journey = Journey.new
   end
 
   def top_up(amount)
@@ -18,29 +20,25 @@ class Oystercard
   end
 
   def attempt_touch_in(entry_station)
-    @new_journey.add_to_fare(PENALTY_FARE) if !journey_not_started?
+    @new_journey = Journey.new
+    @new_journey.add_to_fare(PENALTY_FARE) if !@new_journey.not_started?
     touch_in(entry_station)
   end
   
 
   def attempt_touch_out(exit_station)
-    # @new_journey.add_to_fare(PENALTY_FARE) if journey_not_started?
+    @new_journey.not_started? ? @new_journey.add_to_fare(PENALTY_FARE) : @new_journey.add_to_fare(MINIMUM_FARE)
     touch_out(exit_station) 
   end
 
   private
-
-  def journey_not_started? 
-    @new_journey.nil? 
-  end
   
   def touch_in(entry_station)
-    @new_journey = Journey.new
     balance_above_0?(MINIMUM_FARE) ? @new_journey.start_journey(entry_station) : raise(INSUFFICIENT_ERROR_MSG)
   end
 
   def touch_out(exit_station)
-    deduct(MINIMUM_FARE)
+    deduct(@new_journey.fare)
     reset_journey(exit_station)
   end
 
@@ -59,7 +57,6 @@ class Oystercard
   def reset_journey(exit_station)
     @new_journey.end_journey(exit_station)
     @journeys.push(@new_journey)
-    @new_journey = nil
   end
 
 end

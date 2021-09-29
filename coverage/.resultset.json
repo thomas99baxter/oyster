@@ -1,10 +1,11 @@
 {
   "RSpec": {
     "coverage": {
-      "/Users/tombaxter/Documents/makers-projects/oyster/lib/oystercard.rb": {
+      "/Users/troysnowden/Documents/Makers Projects/oop-week4/oyster/lib/oystercard.rb": {
         "lines": [
           1,
           null,
+          1,
           1,
           1,
           1,
@@ -22,6 +23,7 @@
           null,
           null,
           1,
+          15,
           15,
           null,
           null,
@@ -66,7 +68,7 @@
           null
         ]
       },
-      "/Users/tombaxter/Documents/makers-projects/oyster/lib/journey.rb": {
+      "/Users/troysnowden/Documents/Makers Projects/oop-week4/oyster/lib/journey.rb": {
         "lines": [
           1,
           1,
@@ -89,7 +91,7 @@
           null
         ]
       },
-      "/Users/tombaxter/Documents/makers-projects/oyster/lib/station.rb": {
+      "/Users/troysnowden/Documents/Makers Projects/oop-week4/oyster/lib/station.rb": {
         "lines": [
           1,
           null,
@@ -103,6 +105,6 @@
         ]
       }
     },
-    "timestamp": 1632910550
+    "timestamp": 1632912068
   }
 }

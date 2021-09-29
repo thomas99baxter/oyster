@@ -3,6 +3,7 @@ require 'journey'
 class Oystercard
   MAX_BALANCE = 90
   MINIMUM_FARE = 1
+  PENALTY_FARE = 6
   INSUFFICIENT_ERROR_MSG = "You have insufficient funds in your account!"
   attr_reader :balance, :journeys, :new_journey
 
@@ -17,18 +18,19 @@ class Oystercard
   end
 
   def attempt_touch_in(entry_station)
-    !journey_started? ? touch_in(entry_station) : raise("You have not touched out!")
+    deduct(@new_journey.fare(true)) if !journey_not_started?
+    touch_in(entry_station)
   end
   
 
   def attempt_touch_out(exit_station)
-    journey_started? ? touch_out(exit_station) : raise("Journey has not been initiated!")
+    journey_not_started? ? raise("Journey has not been initiated!") : touch_out(exit_station) 
   end
 
   private
 
-  def journey_started? 
-    !@new_journey.nil? 
+  def journey_not_started? 
+    @new_journey.nil? 
   end
   
   def touch_in(entry_station)

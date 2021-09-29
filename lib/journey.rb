@@ -13,7 +13,7 @@ class Journey
     @full_journey[:exit_station] = exit_station
   end
   
-  def fare
-    Oystercard::MINIMUM_FARE 
+  def fare(penalty = false)
+    penalty ? Oystercard::PENALTY_FARE : Oystercard::MINIMUM_FARE 
   end
 end

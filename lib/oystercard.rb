@@ -16,20 +16,20 @@ class Oystercard
     below_limit?(amount) ? @balance += amount : raise("Over £#{MAX_BALANCE} balance limit!")
   end
 
-  def in_journey?
-    !@new_journey.nil?
-  end
-
   def attempt_touch_in(entry_station)
-    touch_in(entry_station)
+    !journey_started? ? touch_in(entry_station) : raise("You have not touched out!")
   end
   
 
   def attempt_touch_out(exit_station)
-    touch_out(exit_station)
+    journey_started? ? touch_out(exit_station) : raise("Journey has not been initiated!")
   end
 
   private
+
+  def journey_started? 
+    !@new_journey.nil? 
+  end
   
   def touch_in(entry_station)
     balance_above_0?(MINIMUM_FARE) ? @new_journey = Journey.new(entry_station) : raise(INSUFFICIENT_ERROR_MSG)

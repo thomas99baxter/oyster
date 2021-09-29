@@ -16,10 +16,6 @@ describe Oystercard do
       expect(subject.balance).to eq(0)
     end
 
-    it "should initialise with an in_journey variable" do
-      expect(described_class.new(10).in_journey?).to eq(false)
-    end
-
     it "should initalise with attributes balance and journeys" do
       expect(described_class.new(10)).to have_attributes(balance: 10, journeys: [])
     end
@@ -42,19 +38,11 @@ describe Oystercard do
     end
   end
 
-
-  describe "#in_journey?" do
-    it "should return a boolean" do
-      expect([TrueClass, FalseClass].include?(subject.in_journey?.class)).to eq(true)
-    end
-  end
-
   describe "#attempt_touch_in" do
     it "should change the in_journey property to true if enough money in balance" do
       test_card = described_class.new(10)
       test_card.attempt_touch_in(station)
 
-      expect(test_card.in_journey?).to eq(true)
       expect(test_card.new_journey.full_journey[:entry_station]).to eq(station)
     end
 
@@ -63,7 +51,6 @@ describe Oystercard do
 
       expect{test_card.attempt_touch_in(station)}.to raise_error(described_class::INSUFFICIENT_ERROR_MSG)
 
-      expect(test_card.in_journey?).to eq(false)
     end
   end
 
@@ -73,8 +60,6 @@ describe Oystercard do
 
       test_card.attempt_touch_in(station)
       test_card.attempt_touch_out(exit_station)
-
-      expect(test_card.in_journey?).to eq(false)
     end
     
     it "should deduct minimum fare from balance" do
@@ -83,6 +68,12 @@ describe Oystercard do
       test_card.attempt_touch_in(station)
   
       expect{ test_card.attempt_touch_out( exit_station) }.to change{ test_card.balance }.by(-described_class::MINIMUM_FARE)
+    end
+
+    it "should fail when the journey hasnt been initiated (touched in)" do
+      test_card = described_class.new(10)
+  
+      expect{ test_card.attempt_touch_out( exit_station) }.to raise_error("Journey has not been initiated!")
     end
   end
 

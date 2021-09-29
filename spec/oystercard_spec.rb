@@ -49,10 +49,10 @@ describe Oystercard do
     end
   end
 
-  describe "#touch_in" do
+  describe "#attempt_touch_in" do
     it "should change the in_journey property to true if enough money in balance" do
       test_card = described_class.new(10)
-      test_card.touch_in(station)
+      test_card.attempt_touch_in(station)
 
       expect(test_card.in_journey?).to eq(true)
       expect(test_card.new_journey.full_journey[:entry_station]).to eq(station)
@@ -61,18 +61,18 @@ describe Oystercard do
     it "should raise an error if not enough in balance and not change in_journey property" do
       test_card = described_class.new
 
-      expect{test_card.touch_in(station)}.to raise_error(described_class::INSUFFICIENT_ERROR_MSG)
+      expect{test_card.attempt_touch_in(station)}.to raise_error(described_class::INSUFFICIENT_ERROR_MSG)
 
       expect(test_card.in_journey?).to eq(false)
     end
   end
 
-  describe "#touch_out" do
+  describe "#attempt_touch_out" do
     it "should change the in_journey property to false" do
       test_card = described_class.new(10)
 
-      test_card.touch_in(station)
-      test_card.touch_out(exit_station)
+      test_card.attempt_touch_in(station)
+      test_card.attempt_touch_out(exit_station)
 
       expect(test_card.in_journey?).to eq(false)
     end
@@ -80,9 +80,9 @@ describe Oystercard do
     it "should deduct minimum fare from balance" do
       test_card = described_class.new(10)
   
-      test_card.touch_in(station)
+      test_card.attempt_touch_in(station)
   
-      expect{ test_card.touch_out( exit_station) }.to change{ test_card.balance }.by(-described_class::MINIMUM_FARE)
+      expect{ test_card.attempt_touch_out( exit_station) }.to change{ test_card.balance }.by(-described_class::MINIMUM_FARE)
     end
   end
 
@@ -90,8 +90,8 @@ describe Oystercard do
     it "should have one journey after touching in and out once" do
       test_card = described_class.new(10)
   
-      test_card.touch_in(station)
-      test_card.touch_out(exit_station)
+      test_card.attempt_touch_in(station)
+      test_card.attempt_touch_out(exit_station)
   
       expect(test_card.journeys.length).to eq(1)
     end
@@ -100,8 +100,8 @@ describe Oystercard do
       test_card = described_class.new(11)
       
       10.times do
-        test_card.touch_in(station)
-        test_card.touch_out(exit_station)
+        test_card.attempt_touch_in(station)
+        test_card.attempt_touch_out(exit_station)
       end
   
       expect(test_card.journeys.length).to eq(10)

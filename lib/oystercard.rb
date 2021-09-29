@@ -1,16 +1,17 @@
 require 'journey'
+require 'journey_log'
 
 class Oystercard
   MAX_BALANCE = 90
   MINIMUM_FARE = 1
   PENALTY_FARE = 6
   INSUFFICIENT_ERROR_MSG = "You have insufficient funds in your account!"
-  attr_reader :balance, :journeys, :new_journey
+  attr_reader :balance, :journey_log, :new_journey
 
 
   def initialize(balance = 0)
     @balance = balance
-    @journeys = []
+    @journey_log = JourneyLog.new
     # TODO - get rid of having to initialize this journey
     @new_journey = Journey.new
   end
@@ -56,7 +57,7 @@ class Oystercard
 
   def reset_journey(exit_station)
     @new_journey.end_journey(exit_station)
-    @journeys.push(@new_journey)
+    @journey_log.add_journey(@new_journey)
   end
 
 end

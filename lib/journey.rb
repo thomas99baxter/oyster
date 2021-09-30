@@ -1,6 +1,5 @@
 require 'oystercard'
 class Journey
-  MINIMUM_FARE = 1
   attr_reader :full_journey, :fare
   def initialize
     @full_journey = {
@@ -8,6 +7,7 @@ class Journey
        :exit_station => nil
     }
     @fare = 0
+    @penalty = false
   end
 
   def start_journey(entry_station)
@@ -19,6 +19,7 @@ class Journey
   end
   
   def add_to_fare(amount)
+    @penalty = true if amount == Oystercard::PENALTY_FARE
     @fare += amount
   end
 
@@ -27,6 +28,7 @@ class Journey
   end
 
   def calculate_total_fare
-    (@full_journey[:entry_station].zone - @full_journey[:exit_station].zone).abs
+    add_to_fare((@full_journey[:entry_station].zone - @full_journey[:exit_station].zone).abs) unless @penalty
+    @fare
   end
 end

@@ -4,8 +4,8 @@ require 'journey'
 
 describe Oystercard do
 
-  let(:station) {double :station}
-  let(:exit_station) {double :station}
+  let(:station) {double :station, :zone => 1}
+  let(:exit_station) {double :station, :zone => 1}
   
   describe "#initialize" do
     it "should initialize the class" do

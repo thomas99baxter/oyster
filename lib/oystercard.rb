@@ -29,7 +29,7 @@ class Oystercard
 
   def attempt_touch_out(exit_station)
     @new_journey.not_started? ? @new_journey.add_to_fare(PENALTY_FARE) : @new_journey.add_to_fare(MINIMUM_FARE)
-    touch_out(exit_station) 
+    touch_out(exit_station)
   end
 
   private
@@ -39,7 +39,8 @@ class Oystercard
   end
 
   def touch_out(exit_station)
-    deduct(@new_journey.fare)
+    @new_journey.end_journey(exit_station)
+    deduct(@new_journey.calculate_total_fare)
     reset_journey(exit_station)
   end
 
@@ -56,7 +57,6 @@ class Oystercard
   end
 
   def reset_journey(exit_station)
-    @new_journey.end_journey(exit_station)
     @journey_log.add_journey(@new_journey)
   end
 

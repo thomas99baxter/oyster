@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # mainly feature tests and custom error classes in here
 require 'custom_errors'
 require 'journey'
@@ -14,13 +15,13 @@ class Oystercard
   def initialize(balance = 0)
     @balance = balance
     @journey_log = JourneyLog.new
-    # TODO: - get rid of having to initialize this journey AND can a user take multiple journeys without things going tits up? 
+    # TODO: - get rid of having to initialize this journey AND can a user take multiple journeys without things going tits up?
     # Yes to the above, but only fails on one test. dont like initalising journey twice.
     @new_journey = Journey.new
   end
 
   def top_up(amount)
-    below_limit?(amount) ? @balance += amount : raise(OverMaxBalanceError.new())
+    below_limit?(amount) ? @balance += amount : raise(OverMaxBalanceError)
   end
 
   def attempt_touch_in(entry_station)
@@ -38,7 +39,7 @@ class Oystercard
   private
 
   def touch_in(entry_station)
-    balance_above_0?(MINIMUM_FARE) ? @new_journey.start_journey(entry_station) : raise(InsufficientFundsError.new())
+    balance_above_0?(MINIMUM_FARE) ? @new_journey.start_journey(entry_station) : raise(InsufficientFundsError)
   end
 
   def touch_out(exit_station)
@@ -57,6 +58,6 @@ class Oystercard
 
   def deduct(amount)
     # custom error classes again.
-    balance_above_0?(amount) ? @balance -= amount : raise(InsufficientFundsError.new())
+    balance_above_0?(amount) ? @balance -= amount : raise(InsufficientFundsError)
   end
 end

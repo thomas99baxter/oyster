@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-# we need to test branch % coverage :D 
+
+# we need to test branch % coverage :D
 
 require 'oystercard'
 require 'station'
@@ -51,7 +52,10 @@ describe Oystercard do
     it 'should raise an error if not enough in balance and not change in_journey property' do
       test_card = described_class.new
 
-      expect { test_card.attempt_touch_in(station) }.to raise_error(InsufficientFundsError, "You have insufficient funds in your account!")
+      expect do
+        test_card.attempt_touch_in(station)
+      end.to raise_error(InsufficientFundsError,
+                         'You have insufficient funds in your account!')
     end
   end
 
@@ -59,8 +63,10 @@ describe Oystercard do
     it 'should raise an InsufficientFundsError' do
       test_card = described_class.new(1)
 
-      expect { test_card.attempt_touch_in(station) }.to raise_error(InsufficientFundsError, "You have insufficient funds in your account!")
-
+      expect do
+        test_card.attempt_touch_in(station)
+      end.to raise_error(InsufficientFundsError,
+                         'You have insufficient funds in your account!')
     end
 
     it 'should deduct minimum fare from balance' do
@@ -122,7 +128,6 @@ describe Oystercard do
     end
 
     it 'should deduct balance by 6 for zone 1 to 6 journey' do
-
       allow(station).to receive(:zone).and_return(1)
       allow(exit_station).to receive(:zone).and_return(6)
       test_card = described_class.new(11)
@@ -134,7 +139,6 @@ describe Oystercard do
     end
 
     it 'should deduct balance by x for 3 zone 1 to 6 journeys' do
-
       allow(station).to receive(:zone).and_return(1)
       allow(exit_station).to receive(:zone).and_return(6)
       test_card = described_class.new(26)

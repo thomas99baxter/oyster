@@ -17,7 +17,7 @@ describe Oystercard do
     end
 
     it "should initalise with attributes balance and journeys" do
-      expect(described_class.new(10)).to have_attributes(balance: 10, journeys: [])
+      expect(described_class.new(10)).to have_attributes(balance: 10, journey_log: JourneyLog)
     end
   end
 
@@ -83,7 +83,7 @@ describe Oystercard do
       test_card.attempt_touch_in(station)
       test_card.attempt_touch_out(exit_station)
   
-      expect(test_card.journeys.length).to eq(1)
+      expect(test_card.journey_log.journeys.length).to eq(1)
     end
     
     it "should have 10 journeys after touching in and out 10x" do
@@ -94,7 +94,7 @@ describe Oystercard do
         test_card.attempt_touch_out(exit_station)
       end
   
-      expect(test_card.journeys.length).to eq(10)
+      expect(test_card.journey_log.journeys.length).to eq(10)
     end
   end
 

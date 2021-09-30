@@ -19,5 +19,19 @@ describe JourneyLog do
         test_journeys.add_journey(journey)
       }.to change { test_journeys.journeys }.from([]).to([journey]) 
     end
+
+    it "should add multiple journeys to the journeys array" do
+      test_journeys = described_class.new
+      expect{
+        10.times do 
+          test_journeys.add_journey(journey) 
+        end
+      }.to change { test_journeys.journeys }.from([]).to(
+        [
+          journey, journey, journey, journey, journey,
+          journey, journey, journey, journey, journey,
+        ]
+      ) 
+    end
   end
 end

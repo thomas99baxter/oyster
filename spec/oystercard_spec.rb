@@ -102,4 +102,51 @@ describe Oystercard do
       expect(test_card.journey_log.journeys.length).to eq(10)
     end
   end
+
+  describe 'check fare calculations' do
+    it 'should deduct balance by 1 no zones crossed on one journey' do
+      test_card = described_class.new(11)
+
+      test_card.attempt_touch_in(station)
+      test_card.attempt_touch_out(exit_station)
+
+      expect(test_card.balance).to eq(10)
+    end
+
+    it 'should deduct balance by 6 if penalty' do
+      test_card = described_class.new(11)
+
+      test_card.attempt_touch_out(exit_station)
+
+      expect(test_card.balance).to eq(5)
+    end
+
+    it 'should deduct balance by 6 for zone 1 to 6 journey' do
+
+      allow(station).to receive(:zone).and_return(1)
+      allow(exit_station).to receive(:zone).and_return(6)
+      test_card = described_class.new(11)
+
+      test_card.attempt_touch_in(station)
+      test_card.attempt_touch_out(exit_station)
+
+      expect(test_card.balance).to eq(5)
+    end
+
+    it 'should deduct balance by x for 3 zone 1 to 6 journeys' do
+
+      allow(station).to receive(:zone).and_return(1)
+      allow(exit_station).to receive(:zone).and_return(6)
+      test_card = described_class.new(26)
+
+      3.times do
+        test_card.attempt_touch_in(station)
+        test_card.attempt_touch_out(exit_station)
+      end
+
+      test_card.attempt_touch_out(station)
+
+      expect(test_card.balance).to eq(1)
+    end
+  end
 end

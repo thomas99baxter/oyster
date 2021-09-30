@@ -20,7 +20,6 @@ class Oystercard
   end
 
   def top_up(amount)
-    # Raise custom error class i.e OverMaxBalanceError
     below_limit?(amount) ? @balance += amount : raise(OverMaxBalanceError.new())
   end
 

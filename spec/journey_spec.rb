@@ -3,8 +3,9 @@ require 'station'
 require 'journey'
 
 describe Journey do
-  let(:station) {double :station}
-  let(:exit_station) {double :station}
+  let(:station) {double :station, :zone => 1}
+  let(:exit_station) {double :station, :zone => 1}
+
   describe "#initialize" do
     it "should be a journey" do
       expect(described_class.new.class).to eq(Journey)
@@ -55,6 +56,39 @@ describe Journey do
       new_journey = described_class.new
       new_journey.add_to_fare(10)
       expect(new_journey.fare).to eq(10)
+    end
+  end
+
+  describe "#calculate_total_fare" do
+    it "should calculate the correct difference between zones when zones are the same" do
+      new_journey = described_class.new
+
+      new_journey.start_journey(station)
+      new_journey.end_journey(exit_station)
+
+      expect(new_journey.calculate_total_fare).to eq(0)
+    end
+
+    it "should calculate the correct difference between zones when zones are different" do
+      allow(station).to receive(:zone).and_return(1)
+      allow(exit_station).to receive(:zone).and_return(3)
+      new_journey = described_class.new
+
+      new_journey.start_journey(station)
+      new_journey.end_journey(exit_station)
+
+      expect(new_journey.calculate_total_fare).to eq(2)
+    end
+
+    it "should calculate the correct difference between zones when zones are different" do
+      allow(station).to receive(:zone).and_return(3)
+      allow(exit_station).to receive(:zone).and_return(1)
+      new_journey = described_class.new
+
+      new_journey.start_journey(station)
+      new_journey.end_journey(exit_station)
+
+      expect(new_journey.calculate_total_fare).to eq(2)
     end
   end
 end

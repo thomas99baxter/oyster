@@ -26,4 +26,7 @@ class Journey
     self.full_journey[:entry_station].nil?
   end
 
+  def calculate_total_fare
+    (@full_journey[:entry_station].zone - @full_journey[:exit_station].zone).abs
+  end
 end

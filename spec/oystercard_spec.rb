@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+# we need to test branch % coverage :D 
 
 require 'oystercard'
 require 'station'
@@ -50,16 +51,16 @@ describe Oystercard do
     it 'should raise an error if not enough in balance and not change in_journey property' do
       test_card = described_class.new
 
-      expect { test_card.attempt_touch_in(station) }.to raise_error(described_class::INSUFFICIENT_ERROR_MSG)
+      expect { test_card.attempt_touch_in(station) }.to raise_error(InsufficientFundsError, "You have insufficient funds in your account!")
     end
   end
 
   describe '#attempt_touch_out' do
-    it 'should change the in_journey property to false' do
-      test_card = described_class.new(10)
+    it 'should raise an InsufficientFundsError' do
+      test_card = described_class.new(1)
 
-      test_card.attempt_touch_in(station)
-      test_card.attempt_touch_out(exit_station)
+      expect { test_card.attempt_touch_in(station) }.to raise_error(InsufficientFundsError, "You have insufficient funds in your account!")
+
     end
 
     it 'should deduct minimum fare from balance' do

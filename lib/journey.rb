@@ -22,15 +22,17 @@ class Journey
   end
 
   def add_to_fare(amount)
+    # can this be done in a better way? a bit scruffy. look at penalty implementation as a whole.
     @penalty = true if amount == Oystercard::PENALTY_FARE
     @fare += amount
   end
 
   def not_started?
-    full_journey[:entry_station].nil?
+    @full_journey[:entry_station].nil?
   end
 
   def calculate_total_fare
+    #TODO: add this into calculate_zone method - a bit long?
     add_to_fare((@full_journey[:entry_station].zone - @full_journey[:exit_station].zone).abs) unless @penalty
     @fare
   end
